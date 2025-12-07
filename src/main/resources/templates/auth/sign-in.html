@@ -9,105 +9,151 @@
           rel="stylesheet">
 
     <style>
+        :root {
+            --purple-main: #7b2cbf;
+            --purple-dark: #5a189a;
+            --purple-soft: #e0b3ff;
+        }
+
         body {
             min-height: 100vh;
             margin: 0;
-            background: linear-gradient(135deg, #0d6efd 0%, #6610f2 50%, #20c997 100%);
+            background: radial-gradient(circle at top left, #7b2cbf 0, #3c096c 40%, #10002b 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+            color: #fff;
+        }
+
+        .login-wrapper {
+            width: 100%;
+            max-width: 430px;
+            padding: 1rem;
         }
 
         .login-card {
-            max-width: 420px;
-            width: 100%;
-            border-radius: 1rem;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
-            overflow: hidden;
+            border-radius: 1.25rem;
+            background: rgba(16, 0, 43, 0.8);
+            box-shadow: 0 32px 60px rgba(0, 0, 0, 0.55);
+            border: 1px solid rgba(224, 179, 255, 0.35);
+            backdrop-filter: blur(14px);
         }
 
         .login-header {
-            background: linear-gradient(135deg, #0d6efd, #6610f2);
-            color: #fff;
-            padding: 1.5rem 1.75rem;
+            padding: 1.75rem 1.75rem 0.5rem;
         }
 
         .login-header h2 {
-            margin: 0;
-            font-weight: 600;
+            font-weight: 700;
+            letter-spacing: 0.5px;
         }
 
         .login-header p {
-            margin: 0.25rem 0 0;
-            opacity: 0.8;
+            margin-top: 0.4rem;
             font-size: 0.9rem;
+            color: #e0b3ff;
         }
 
         .login-body {
-            padding: 1.75rem;
-            background-color: #ffffff;
+            padding: 1.25rem 1.75rem 1.75rem;
         }
 
         .form-label {
             font-weight: 500;
+            color: #f8f0ff;
         }
 
-        .btn-primary {
+        .form-control {
+            border-radius: 999px;
+            border: 1px solid rgba(224, 179, 255, 0.4);
+            background-color: rgba(16, 0, 43, 0.9);
+            color: #fff;
+        }
+
+        .form-control:focus {
+            border-color: var(--purple-soft);
+            box-shadow: 0 0 0 0.15rem rgba(123, 44, 191, 0.35);
+            background-color: rgba(16, 0, 43, 0.98);
+        }
+
+        .btn-purple {
             width: 100%;
             border-radius: 999px;
-            padding: 0.6rem 1rem;
+            padding: 0.65rem 1rem;
             font-weight: 600;
+            border: none;
+            background: linear-gradient(135deg, var(--purple-main), var(--purple-dark));
+            color: #fff;
+            box-shadow: 0 14px 30px rgba(123, 44, 191, 0.6);
+            transition: all 0.18s ease-in-out;
+        }
+
+        .btn-purple:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 18px 36px rgba(123, 44, 191, 0.8);
         }
 
         .small-link {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
+            color: var(--purple-soft);
+        }
+
+        .small-link a {
+            color: #f7d1ff;
+            text-decoration: none;
+        }
+
+        .small-link a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
 
-<div class="login-card bg-white">
-    <div class="login-header">
-        <h2>Welcome back</h2>
-        <p>Sign in to manage your bookings and vouchers</p>
-    </div>
+<div class="login-wrapper">
+    <div class="login-card">
+        <div class="login-header text-center">
+            <h2>Sign in</h2>
+            <p>Access your Travel Agency account and manage your vouchers</p>
+        </div>
 
-    <div class="login-body">
-        <!-- Bind to LoginRequest -->
-        <form th:action="@{/auth/login}" th:object="${loginRequest}" method="post">
-            <div class="mb-3">
-                <label for="username" class="form-label">Username</label>
-                <input type="text"
-                       class="form-control"
-                       id="username"
-                       th:field="*{username}"
-                       placeholder="Enter your username"
-                       required>
-            </div>
+        <div class="login-body">
+            <!-- Bind to LoginRequest -->
+            <form th:action="@{/auth/login}" th:object="${loginRequest}" method="post">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text"
+                           class="form-control"
+                           id="username"
+                           th:field="*{username}"
+                           placeholder="Enter your username"
+                           required>
+                </div>
 
-            <div class="mb-3">
-                <label for="password" class="form-label d-flex justify-content-between">
-                    <span>Password</span>
-                    <a href="#" class="small-link text-decoration-none text-primary-50">Forgot password?</a>
-                </label>
-                <input type="password"
-                       class="form-control"
-                       id="password"
-                       th:field="*{password}"
-                       placeholder="Enter your password"
-                       required>
-            </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label d-flex justify-content-between">
+                        <span>Password</span>
+                        <a href="#" class="small-link">Forgot password?</a>
+                    </label>
+                    <input type="password"
+                           class="form-control"
+                           id="password"
+                           th:field="*{password}"
+                           placeholder="Enter your password"
+                           required>
+                </div>
 
-            <button type="submit" class="btn btn-primary mt-2">
-                Sign in
-            </button>
+                <button type="submit" class="btn btn-purple mt-2">
+                    Sign in
+                </button>
 
-            <div class="text-center mt-3 small-link">
-                Don’t have an account?
-                <a th:href="@{/auth/sign-up}" class="text-decoration-none">Sign up</a>
-            </div>
-        </form>
+                <div class="text-center mt-3 small-link">
+                    Don’t have an account?
+                    <a th:href="@{/auth/sign-up}">Sign up</a>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
