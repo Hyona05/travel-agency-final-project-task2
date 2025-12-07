@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -179,4 +181,23 @@ public class VoucherServiceImpl implements VoucherService {
                 .map(voucherMapper::toVoucherDTO)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public Page<VoucherDTO> search(TourType tourType,
+                                   HotelType hotelType,
+                                   String transferType,
+                                   Pageable pageable) {
+
+        TransferType transferEnum = null;
+        if (transferType != null && !transferType.isBlank()) {
+            transferEnum = TransferType.valueOf(transferType);
+        }
+
+        Page<Voucher> page = voucherRepository.search(tourType, hotelType, transferEnum, pageable);
+
+        return page.map(voucherMapper::toVoucherDTO);
+    }
+
+
+
 }

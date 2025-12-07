@@ -89,6 +89,21 @@ public class UserServiceImpl implements UserService {
         return userMapper.toUserDTO(saved);
     }
 
+    @Override
+    public UserDTO blockUser(String id) {
+        User user = userRepository.findById(UUID.fromString(id))
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        user.setActive(false);
+        return userMapper.toUserDTO(userRepository.save(user));
+    }
+
+    @Override
+    public UserDTO unblockUser(String id) {
+        User user = userRepository.findById(UUID.fromString(id))
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        user.setActive(true);
+        return userMapper.toUserDTO(userRepository.save(user));
+    }
 
     @Override
     public UserDTO getUserById(UUID id) {

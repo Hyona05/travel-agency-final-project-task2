@@ -12,4 +12,8 @@ public interface UserService {
     UserDTO getUserByUsername(String username);
     UserDTO changeAccountStatus(UserDTO userDTO);
     UserDTO getUserById(UUID id);
+
+    UserDTO blockUser(String id);
+    UserDTO unblockUser(String id);
+
 }

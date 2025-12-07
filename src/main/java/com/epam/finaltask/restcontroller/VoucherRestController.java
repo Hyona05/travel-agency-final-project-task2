@@ -1,7 +1,12 @@
 package com.epam.finaltask.restcontroller;
 
 import java.util.List;
-
+import com.epam.finaltask.model.TourType;
+import com.epam.finaltask.model.HotelType;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -90,4 +95,34 @@ public class VoucherRestController {
                 ApiResponse.ok("Voucher status is successfully changed", updated);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ApiResponse<List<VoucherDTO>>> search(
+            @RequestParam(required = false) TourType tourType,
+            @RequestParam(required = false) HotelType hotelType,
+            @RequestParam(required = false) String transferType,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "price,asc") String sort) {
+
+        String[] sortParts = sort.split(",");
+        String sortBy = sortParts[0];
+        String direction = sortParts.length > 1 ? sortParts[1] : "asc";
+
+        Pageable pageable = PageRequest.of(page, size,
+                direction.equalsIgnoreCase("desc")
+                        ? Sort.by(sortBy).descending()
+                        : Sort.by(sortBy).ascending());
+
+        Page<VoucherDTO> voucherPage =
+                voucherService.search(tourType, hotelType, transferType, pageable);
+
+        ApiResponse<List<VoucherDTO>> res = new ApiResponse<>();
+        res.setResults(voucherPage.getContent());
+        res.setStatusCode("OK");
+        res.setStatusMessage("Search successful");
+
+        return ResponseEntity.ok(res);
+    }
+
 }
