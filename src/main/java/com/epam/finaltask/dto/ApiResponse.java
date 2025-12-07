@@ -1,22 +1,21 @@
 package com.epam.finaltask.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ApiResponse<T> {
+@Schema(description = "Standard API response wrapper")
+public record ApiResponse<T>(
 
-    private String statusCode;
-    private String statusMessage;
-    private T results;
+        @Schema(description = "Response status code", example = "OK")
+        String statusCode,
 
-    public ApiResponse() {
-    }
+        @Schema(description = "Response message", example = "Success")
+        String statusMessage,
 
-    public ApiResponse(String statusCode, String statusMessage, T results) {
-        this.statusCode = statusCode;
-        this.statusMessage = statusMessage;
-        this.results = results;
-    }
+        @Schema(description = "Payload of the response")
+        T results
+) {
 
     public static <T> ApiResponse<T> ok(String message, T results) {
         return new ApiResponse<>("OK", message, results);
@@ -24,29 +23,5 @@ public class ApiResponse<T> {
 
     public static <T> ApiResponse<T> ok(T results) {
         return new ApiResponse<>("OK", null, results);
-    }
-
-    public String getStatusCode() {
-        return statusCode;
-    }
-
-    public String getStatusMessage() {
-        return statusMessage;
-    }
-
-    public T getResults() {
-        return results;
-    }
-
-    public void setStatusCode(String statusCode) {
-        this.statusCode = statusCode;
-    }
-
-    public void setStatusMessage(String statusMessage) {
-        this.statusMessage = statusMessage;
-    }
-
-    public void setResults(T results) {
-        this.results = results;
     }
 }

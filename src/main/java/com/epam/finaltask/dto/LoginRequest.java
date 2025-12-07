@@ -1,26 +1,13 @@
 package com.epam.finaltask.dto;
 
-public class LoginRequest {
+import io.swagger.v3.oas.annotations.media.Schema;
 
-    private String username;
-    private String password;
+@Schema(description = "Login request DTO")
+public record LoginRequest(
 
-    public LoginRequest() {
-    }
+        @Schema(description = "User's username", example = "john123")
+        String username,
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-}
+        @Schema(description = "User's password", example = "12345")
+        String password
+) {}

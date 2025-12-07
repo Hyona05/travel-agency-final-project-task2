@@ -1,6 +1,7 @@
 package com.epam.finaltask.mapper;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Component;
@@ -14,62 +15,56 @@ public class UserMapperImpl implements UserMapper {
 
     @Override
     public UserDTO toUserDTO(User user) {
-        if (user == null) {
-            return null;
-        }
+        if (user == null) return null;
 
-        UserDTO dto = new UserDTO();
-        if (user.getId() != null) {
-            dto.setId(user.getId().toString());
-        }
-        dto.setUsername(user.getUsername());
-        dto.setPassword(user.getPassword());  // usually you would NOT expose this, but for this task/test it's fine
-        if (user.getRole() != null) {
-            dto.setRole(user.getRole().name());
-        }
-        dto.setVouchers(user.getVouchers());
-        dto.setPhoneNumber(user.getPhoneNumber());
+        String id = user.getId() != null ? user.getId().toString() : null;
+        String role = user.getRole() != null ? user.getRole().name() : null;
+        Double balance = user.getBalance() != null ? user.getBalance().doubleValue() : null;
 
-        BigDecimal balance = user.getBalance();
-        if (balance != null) {
-            dto.setBalance(balance.doubleValue());
-        }
+        String password = user.getPassword();
 
-        dto.setActive(user.isActive());
-        return dto;
+        List<String> voucherIds = null;
+
+        return new UserDTO(
+                id,
+                user.getUsername(),
+                password,
+                role,
+                voucherIds,
+                user.getPhoneNumber(),
+                balance,
+                user.isActive()
+        );
     }
 
     @Override
     public User toUser(UserDTO dto) {
-        if (dto == null) {
-            return null;
-        }
+        if (dto == null) return null;
 
         User user = new User();
 
-        if (dto.getId() != null) {
+        if (dto.id() != null && !dto.id().isBlank()) {
             try {
-                user.setId(UUID.fromString(dto.getId()));
-            } catch (IllegalArgumentException ex) {
-                // ignore invalid UUID, let service handle it if necessary
+                user.setId(UUID.fromString(dto.id()));
+            } catch (IllegalArgumentException ignored) {
             }
         }
 
-        user.setUsername(dto.getUsername());
-        user.setPassword(dto.getPassword());
+        user.setUsername(dto.username());
+        user.setPassword(dto.password());
 
-        if (dto.getRole() != null) {
-            user.setRole(Role.valueOf(dto.getRole()));
+        if (dto.role() != null) {
+            user.setRole(Role.valueOf(dto.role()));
         }
 
-        user.setVouchers(dto.getVouchers());
-        user.setPhoneNumber(dto.getPhoneNumber());
+        user.setPhoneNumber(dto.phoneNumber());
 
-        if (dto.getBalance() != null) {
-            user.setBalance(BigDecimal.valueOf(dto.getBalance()));
+        if (dto.balance() != null) {
+            user.setBalance(BigDecimal.valueOf(dto.balance()));
         }
 
-        user.setActive(dto.isActive());
+        user.setActive(dto.active());
+
 
         return user;
     }

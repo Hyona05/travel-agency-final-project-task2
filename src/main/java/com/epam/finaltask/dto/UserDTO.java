@@ -1,91 +1,36 @@
 package com.epam.finaltask.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.util.List;
 
-import com.epam.finaltask.model.Voucher;
+@Schema(description = "User DTO for API responses")
+public record UserDTO(
 
-import lombok.Data;
+        @Schema(description = "User ID", example = "d1e8c3bd-4d52-4e91-bcdb-91b25a8d343b")
+        String id,
 
-public class UserDTO {
+        @Schema(description = "Username", example = "john123")
+        String username,
 
-	private String id;
+        @Schema(description = "Password hash", example = "******")
+        String password,
 
-	private String username;
+        @Schema(description = "User role", example = "ADMIN")
+        String role,
 
-	private String password;
+        @Schema(description = "List of voucher IDs owned by the user")
+        List<String> voucherIds,
 
-	private String role;
+        @Schema(description = "Phone number", example = "+998901234567")
+        String phoneNumber,
 
-	private List<Voucher> vouchers;
+        @Schema(description = "User balance", example = "150.50")
+        Double balance,
 
-	private String phoneNumber;
+        @Schema(description = "Active status", example = "true")
+        boolean active
 
-	private Double balance;
+) {
 
-	private boolean active;
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getRole() {
-		return role;
-	}
-
-	public void setRole(String role) {
-		this.role = role;
-	}
-
-	public List<Voucher> getVouchers() {
-		return vouchers;
-	}
-
-	public void setVouchers(List<Voucher> vouchers) {
-		this.vouchers = vouchers;
-	}
-
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
-
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
-
-	public Double getBalance() {
-		return balance;
-	}
-
-	public void setBalance(Double balance) {
-		this.balance = balance;
-	}
-
-	public boolean isActive() {
-		return active;
-	}
-
-	public void setActive(boolean active) {
-		this.active = active;
-	}
-	
 }

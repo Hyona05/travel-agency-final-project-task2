@@ -32,11 +32,5 @@ public interface VoucherRepository extends JpaRepository<Voucher, UUID> {
                          @Param("hotelType") HotelType hotelType,
                          @Param("transferType") TransferType transferType,
                          Pageable pageable);
-    Page<Voucher> findAllByTourTypeAndHotelTypeAndTransferType(
-            TourType tourType,
-            HotelType hotelType,
-            TransferType transferType,
-            Pageable pageable
-    );
 
 }

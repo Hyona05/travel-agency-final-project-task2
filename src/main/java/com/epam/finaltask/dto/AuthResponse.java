@@ -1,35 +1,16 @@
 package com.epam.finaltask.dto;
 
-public class AuthResponse {
+import io.swagger.v3.oas.annotations.media.Schema;
 
-    private String accessToken;
-    private String refreshToken;
-    private UserDTO user;
+@Schema(description = "Authentication response containing tokens and user data")
+public record AuthResponse(
 
-    public AuthResponse() {
-    }
+        @Schema(description = "JWT access token")
+        String accessToken,
 
-    public String getAccessToken() {
-        return accessToken;
-    }
+        @Schema(description = "JWT refresh token")
+        String refreshToken,
 
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
-
-    public String getRefreshToken() {
-        return refreshToken;
-    }
-
-    public void setRefreshToken(String refreshToken) {
-        this.refreshToken = refreshToken;
-    }
-
-    public UserDTO getUser() {
-        return user;
-    }
-
-    public void setUser(UserDTO user) {
-        this.user = user;
-    }
-}
+        @Schema(description = "Authenticated user information")
+        UserDTO user
+) {}

@@ -11,7 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.epam.finaltask.dto.VoucherDTO;
 import com.epam.finaltask.mapper.VoucherMapper;
-import com.epam.finaltask.model.*;
+import com.epam.finaltask.model.HotelType;
+import com.epam.finaltask.model.TourType;
+import com.epam.finaltask.model.TransferType;
+import com.epam.finaltask.model.User;
+import com.epam.finaltask.model.Voucher;
+import com.epam.finaltask.model.VoucherStatus;
 import com.epam.finaltask.repository.UserRepository;
 import com.epam.finaltask.repository.VoucherRepository;
 
@@ -35,16 +40,14 @@ public class VoucherServiceImpl implements VoucherService {
     public VoucherDTO create(VoucherDTO voucherDTO) {
         Voucher voucher = voucherMapper.toVoucher(voucherDTO);
 
-        // default status if not set
         if (voucher.getStatus() == null) {
             voucher.setStatus(VoucherStatus.REGISTERED);
         }
 
-        // link user if provided
-        if (voucherDTO.getUserId() != null) {
-            User user = userRepository.findById(voucherDTO.getUserId())
+        if (voucherDTO.userId() != null) {
+            User user = userRepository.findById(voucherDTO.userId())
                     .orElseThrow(() -> new IllegalArgumentException("User not found"));
-            voucher.setUser(user);
+            voucher.setUserId(user.getId());
         }
 
         Voucher saved = voucherRepository.save(voucher);
@@ -62,7 +65,8 @@ public class VoucherServiceImpl implements VoucherService {
         User user = userRepository.findById(uId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
-        voucher.setUser(user);
+        voucher.setUserId(user.getId());
+
         voucher.setStatus(VoucherStatus.REGISTERED);
 
         Voucher saved = voucherRepository.save(voucher);
@@ -76,35 +80,34 @@ public class VoucherServiceImpl implements VoucherService {
         Voucher voucher = voucherRepository.findById(voucherId)
                 .orElseThrow(() -> new IllegalArgumentException("Voucher not found"));
 
-        // simple “overwrite” update – you can make it smarter if you want
-        voucher.setTitle(voucherDTO.getTitle());
-        voucher.setDescription(voucherDTO.getDescription());
-        voucher.setPrice(voucherDTO.getPrice());
+        voucher.setTitle(voucherDTO.title());
+        voucher.setDescription(voucherDTO.description());
+        voucher.setPrice(voucherDTO.price());
 
-        if (voucherDTO.getTourType() != null) {
-            voucher.setTourType(TourType.valueOf(voucherDTO.getTourType()));
+        if (voucherDTO.transferType() != null) {
+            voucher.setTourType(TourType.valueOf(voucherDTO.tourType()));
         }
-        if (voucherDTO.getTransferType() != null) {
-            voucher.setTransferType(TransferType.valueOf(voucherDTO.getTransferType()));
+        if (voucherDTO.transferType() != null) {
+            voucher.setTransferType(TransferType.valueOf(voucherDTO.transferType()));
         }
-        if (voucherDTO.getHotelType() != null) {
-            voucher.setHotelType(HotelType.valueOf(voucherDTO.getHotelType()));
+        if (voucherDTO.hotelType() != null) {
+            voucher.setHotelType(HotelType.valueOf(voucherDTO.hotelType()));
         }
-        if (voucherDTO.getStatus() != null) {
-            voucher.setStatus(VoucherStatus.valueOf(voucherDTO.getStatus()));
+        if (voucherDTO.status() != null) {
+            voucher.setStatus(VoucherStatus.valueOf(voucherDTO.status()));
         }
 
-        voucher.setArrivalDate(voucherDTO.getArrivalDate());
-        voucher.setEvictionDate(voucherDTO.getEvictionDate());
+        voucher.setArrivalDate(voucherDTO.arrivalDate());
+        voucher.setEvictionDate(voucherDTO.evictionDate());
 
-        if (voucherDTO.getUserId() != null) {
-            User user = userRepository.findById(voucherDTO.getUserId())
+        if (voucherDTO.userId() != null) {
+            User user = userRepository.findById(voucherDTO.userId())
                     .orElseThrow(() -> new IllegalArgumentException("User not found"));
-            voucher.setUser(user);
+            voucher.setUserId(user.getId());
         }
 
-        if (voucherDTO.getIsHot() != null) {
-            voucher.setHot(voucherDTO.getIsHot());
+        if (voucherDTO.isHot() != null) {
+            voucher.setHot(voucherDTO.isHot());
         }
 
         Voucher saved = voucherRepository.save(voucher);
@@ -124,8 +127,8 @@ public class VoucherServiceImpl implements VoucherService {
         Voucher voucher = voucherRepository.findById(voucherId)
                 .orElseThrow(() -> new IllegalArgumentException("Voucher not found"));
 
-        if (voucherDTO.getIsHot() != null) {
-            voucher.setHot(voucherDTO.getIsHot());
+        if (voucherDTO.isHot() != null) {
+            voucher.setHot(voucherDTO.isHot());
         }
 
         Voucher saved = voucherRepository.save(voucher);
@@ -197,7 +200,4 @@ public class VoucherServiceImpl implements VoucherService {
 
         return page.map(voucherMapper::toVoucherDTO);
     }
-
-
-
 }

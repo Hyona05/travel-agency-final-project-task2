@@ -1,128 +1,46 @@
 package com.epam.finaltask.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.time.LocalDate;
 import java.util.UUID;
 
-public class VoucherDTO {
+@Schema(description = "Voucher DTO representing travel package information")
+public record VoucherDTO(
 
-    private String id;
+        @Schema(description = "Voucher ID", example = "e73d9092-4315-4a0e-bda8-6fd27a3e54f6")
+        String id,
 
-    private String title;
+        @Schema(description = "Voucher title", example = "Summer Sale")
+        String title,
 
-    private String description;
+        @Schema(description = "Detailed description of the voucher", example = "All-inclusive holiday package")
+        String description,
 
-    private Double price;
+        @Schema(description = "Price of the voucher", example = "299.99")
+        Double price,
 
-    private String tourType;
+        @Schema(description = "Tour type", example = "ADVENTURE")
+        String tourType,
 
-    private String transferType;
+        @Schema(description = "Transport type", example = "PLANE")
+        String transferType,
 
-    private String hotelType;
+        @Schema(description = "Hotel type", example = "FIVE_STARS")
+        String hotelType,
 
-    private String status;
+        @Schema(description = "Voucher status", example = "PAID")
+        String status,
 
-    private LocalDate arrivalDate;
+        @Schema(description = "Arrival date")
+        LocalDate arrivalDate,
 
-    private LocalDate evictionDate;
+        @Schema(description = "Eviction or return date")
+        LocalDate evictionDate,
 
-    private UUID userId;
+        @Schema(description = "ID of the user who owns the voucher")
+        UUID userId,
 
-    private Boolean isHot;
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public Double getPrice() {
-		return price;
-	}
-
-	public void setPrice(Double price) {
-		this.price = price;
-	}
-
-	public String getTourType() {
-		return tourType;
-	}
-
-	public void setTourType(String tourType) {
-		this.tourType = tourType;
-	}
-
-	public String getTransferType() {
-		return transferType;
-	}
-
-	public void setTransferType(String transferType) {
-		this.transferType = transferType;
-	}
-
-	public String getHotelType() {
-		return hotelType;
-	}
-
-	public void setHotelType(String hotelType) {
-		this.hotelType = hotelType;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	public LocalDate getArrivalDate() {
-		return arrivalDate;
-	}
-
-	public void setArrivalDate(LocalDate arrivalDate) {
-		this.arrivalDate = arrivalDate;
-	}
-
-	public LocalDate getEvictionDate() {
-		return evictionDate;
-	}
-
-	public void setEvictionDate(LocalDate evictionDate) {
-		this.evictionDate = evictionDate;
-	}
-
-	public UUID getUserId() {
-		return userId;
-	}
-
-	public void setUserId(UUID userId) {
-		this.userId = userId;
-	}
-
-	public Boolean getIsHot() {
-		return isHot;
-	}
-
-	public void setIsHot(Boolean isHot) {
-		this.isHot = isHot;
-	}
-    
-}
+        @Schema(description = "Indicates whether voucher is marked as hot", example = "true")
+        Boolean isHot
+) {}

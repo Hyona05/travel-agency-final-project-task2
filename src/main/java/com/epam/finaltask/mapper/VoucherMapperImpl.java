@@ -15,36 +15,36 @@ public class VoucherMapperImpl implements VoucherMapper {
         if (dto == null) {
             return null;
         }
+
         Voucher voucher = new Voucher();
 
-        if (dto.getId() != null) {
-            voucher.setId(UUID.fromString(dto.getId()));
+        if (dto.id() != null && !dto.id().isBlank()) {
+            voucher.setId(UUID.fromString(dto.id()));
         }
 
-        voucher.setTitle(dto.getTitle());
-        voucher.setDescription(dto.getDescription());
-        voucher.setPrice(dto.getPrice());
+        voucher.setTitle(dto.title());
+        voucher.setDescription(dto.description());
+        voucher.setPrice(dto.price());
 
-        if (dto.getTourType() != null) {
-            voucher.setTourType(TourType.valueOf(dto.getTourType()));
+        if (dto.tourType() != null) {
+            voucher.setTourType(TourType.valueOf(dto.tourType()));
         }
-        if (dto.getTransferType() != null) {
-            voucher.setTransferType(TransferType.valueOf(dto.getTransferType()));
+        if (dto.transferType() != null) {
+            voucher.setTransferType(TransferType.valueOf(dto.transferType()));
         }
-        if (dto.getHotelType() != null) {
-            voucher.setHotelType(HotelType.valueOf(dto.getHotelType()));
+        if (dto.hotelType() != null) {
+            voucher.setHotelType(HotelType.valueOf(dto.hotelType()));
         }
-        if (dto.getStatus() != null) {
-            voucher.setStatus(VoucherStatus.valueOf(dto.getStatus()));
-        }
-
-        voucher.setArrivalDate(dto.getArrivalDate());
-        voucher.setEvictionDate(dto.getEvictionDate());
-        if (dto.getIsHot() != null) {
-            voucher.setHot(dto.getIsHot());
+        if (dto.status() != null) {
+            voucher.setStatus(VoucherStatus.valueOf(dto.status()));
         }
 
-        // User relation should be set in service (by loading User by dto.getUserId())
+        voucher.setArrivalDate(dto.arrivalDate());
+        voucher.setEvictionDate(dto.evictionDate());
+
+        if (dto.isHot() != null) {
+            voucher.setHot(dto.isHot());
+        }
         return voucher;
     }
 
@@ -53,31 +53,28 @@ public class VoucherMapperImpl implements VoucherMapper {
         if (voucher == null) {
             return null;
         }
-        VoucherDTO dto = new VoucherDTO();
-        if (voucher.getId() != null) {
-            dto.setId(voucher.getId().toString());
-        }
-        dto.setTitle(voucher.getTitle());
-        dto.setDescription(voucher.getDescription());
-        dto.setPrice(voucher.getPrice());
-        if (voucher.getTourType() != null) {
-            dto.setTourType(voucher.getTourType().name());
-        }
-        if (voucher.getTransferType() != null) {
-            dto.setTransferType(voucher.getTransferType().name());
-        }
-        if (voucher.getHotelType() != null) {
-            dto.setHotelType(voucher.getHotelType().name());
-        }
-        if (voucher.getStatus() != null) {
-            dto.setStatus(voucher.getStatus().name());
-        }
-        dto.setArrivalDate(voucher.getArrivalDate());
-        dto.setEvictionDate(voucher.getEvictionDate());
-        if (voucher.getUser() != null && voucher.getUser().getId() != null) {
-            dto.setUserId(voucher.getUser().getId());
-        }
-        dto.setIsHot(voucher.isHot());
-        return dto;
+
+        String id = voucher.getId() != null ? voucher.getId().toString() : null;
+        String tourType = voucher.getTourType() != null ? voucher.getTourType().name() : null;
+        String transferType = voucher.getTransferType() != null ? voucher.getTransferType().name() : null;
+        String hotelType = voucher.getHotelType() != null ? voucher.getHotelType().name() : null;
+        String status = voucher.getStatus() != null ? voucher.getStatus().name() : null;
+        UUID userId = (voucher.getUserId() != null) ? voucher.getUserId(): null;
+        Boolean isHot = voucher.isHot();
+
+        return new VoucherDTO(
+                id,
+                voucher.getTitle(),
+                voucher.getDescription(),
+                voucher.getPrice(),
+                tourType,
+                transferType,
+                hotelType,
+                status,
+                voucher.getArrivalDate(),
+                voucher.getEvictionDate(),
+                userId,
+                isHot
+        );
     }
 }
